@@ -22,42 +22,14 @@ void main()
 
 	for (int i = 0; i < n; i++)
 	{
-		cout << arr + i << "\t";
+		cout << *(arr + i) << "\t";
 	}
-cout << "\n\n" << "разыменование указатиеля и вывод на экран значения по адресу" << endl<< endl;
-	for (int i = 0; i < n; i++)
+	cout << endl;
+
+	for (int* p_arr = arr; *p_arr!=0xCCCCCCCC; p_arr++)
 	{
-		int* pa = &arr[i];
-		cout << &arr[i] << " - ";
-		cout << *pa << endl;
+		cout << *p_arr << "\t";
 	}
-	cout << "\n" << "Оператор '+': " << "\n\n";
-	for (int i = 0; i < n; i++)
-	{
-	int* pa = &arr[i];
-	cout << &arr[i] << " - ";
-	cout << *pa+i << endl;
-	}	
-	cout << "\n" << "Оператор '-': " << "\n\n";
-	for (int i = 0; i < n; i++)
-	{
-		int* pa = &arr[i];
-		cout << &arr[i] << " - ";
-		cout << *pa - i << endl;
-	}
-	cout << "\n" << "Оператор '++': " << "\n\n";
-	for (int i = 0; i < n; i++)
-	{
-		int* pa = &arr[i];
-		cout << &arr[i] << " - ";
-		cout << ++*pa << endl;
-	}
-	cout << "\n" << "Оператор '--': " << "\n\n";
-	for (int i = 0; i < n; i++)
-	{
-		int* pa = &arr[i];
-		cout << &arr[i] << " - ";
-		cout << --*pa << endl;
-	}
-	cout << "\n\n";
+	cout << endl;
+	
 }
