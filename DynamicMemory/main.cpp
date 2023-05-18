@@ -22,24 +22,28 @@ void Print(int** arr, const int rows, const int cols);
 
 int* push_back(int* arr, int& n, int value);
 int** push_row_back(int** arr, int& rows, const int cols);
+void push_col_back(int** arr, const int rows, int& cols);
 
 int* push_front(int* arr, int& n, int value);
 int** push_row_front(int** arr, int& rows, const int cols);
+void push_col_front(int** arr, const int rows, int& cols);
 
 int* insert(int* arr, int& n, int value, int index);
 int** insert_row(int** arr, int& rows,const int cols,const int index);
+void insert_col(int** arr, const int rows, int& cols, const int index);
  
 int* pop_back(int* arr, int& n);
 int** pop_row_back(int** arr, int& rows, const int cols);
+void pop_col_back(int** arr, const int rows, int& cols);
 
 int* pop_front(int* arr, int& n);
 int** pop_row_front(int** arr, int& rows, const int cols);
+void pop_col_front(int** arr, const int rows, int& cols);
 
 int* erase(int* arr, int& n, int value, int index);
 int** erase_row(int** arr, int& rows, const int cols, const int index);
+void erase_col(int** arr,const int rows, int& cols, const int index);
 
-void push_col_back(int** arr, const int rows, int& cols);
-void push_col_front(int** arr, const int rows, int& cols);
 
 void main()
 {
@@ -85,8 +89,11 @@ void main()
 	cout << "Введите количество строк: "; cin >> rows;
 	cout << "Введите количество элементов строки: "; cin >> cols; cout << endl;
 	cout << "Выводит двумерный динамический массив на экран: " << endl;
+
 	
 	int** arr = Allocate(rows, cols);
+	FillRand(arr, rows, cols);
+	Print(arr, rows, cols);
 #ifdef PERFOMANCE_TEST
 	cout << "Память выделена, для добавление строки нажмите любую клавишу" << endl;
 	system("PAUSE");
@@ -95,10 +102,7 @@ void main()
 	clock_t c_end = clock();
 	cout << "Строка добавлена: " << double(c_end - c_start) / CLOCKS_PER_SEC << endl;
 	system("PAUSE");
-#endif
 
-	FillRand(arr, rows, cols);
-	Print(arr, rows, cols);
 
 	cout << delimiter << endl;
 	cout << "добавляет пустую строку в конец двумерного динамического массива: " << endl;
@@ -143,8 +147,28 @@ void main()
 	push_col_front(arr, rows, cols);
 	Print(arr, rows, cols);
 	
+	cout << delimiter << endl;
+	cout << "вставляет пустой столбец в двумерный динамический массив по заданному индексу: " << endl;
+	cout << "Введите индекс добовляемого элемента: "; cin >> index;
+	insert_col(arr, rows, cols, index);
+	Print(arr, rows, cols);
+#endif
 
+	cout << delimiter << endl;
+	cout << "удаляет столбец с конца двумерного динамического массива" << endl;
+	pop_col_back(arr, rows, cols);
+	Print(arr, rows, cols);
 
+	cout << delimiter << endl;
+	cout << "удаляет столбец с начала двумерного динамического массива" << endl;
+	pop_col_front(arr, rows, cols);
+	Print(arr, rows, cols);
+
+	cout << delimiter << endl;
+	cout << "удаляет столбец из двумерного динамического массива по заданному индексу: " << endl;
+	cout << "Введите индекс добовляемого элемента: "; cin >> index;
+	erase_col(arr, rows, cols, index);
+	Print(arr, rows, cols);
 
 	Clear(arr, cols);
 
@@ -247,6 +271,22 @@ int** push_row_back(int** arr, int& rows, const int cols)
 	return arr;
 }
 
+void push_col_back(int** arr, const int rows, int& cols)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		//1) Создаем буферную строку
+		int* buffer = new int[cols + 1] {};
+		//2) Копируем все содержимое из исходной строки в буферную:
+		for (int j = 0; j < cols; j++)buffer[j] = arr[i][j];
+		//3) Удаляем исходную строку
+		delete[] arr[i];
+		//4) Записываем адрес новой строки в массив указателей: 
+		arr[i] = buffer;
+	}
+	cols++;
+}
+
 int* push_front(int* arr, int& n, int value)
 {
 	int* buffer = new int[n + 1];
@@ -265,6 +305,18 @@ int** push_row_front(int** arr, int& rows, const int cols)
 	delete[] arr;
 	rows++;
 	return buffer;
+}
+
+void push_col_front(int** arr, const int rows, int& cols)
+{
+	for (int i = 0; i < rows; i++) 
+	{
+		int* buffer = new int[cols + 1] {};
+		for (int j = 0; j < cols; j++) buffer[j + 1] = arr[i][j];
+		delete[] arr[i];
+		arr[i] = buffer;
+	}
+	cols++;
 }
 
 int* insert(int* arr, int& n, int value, int index)
@@ -295,6 +347,20 @@ int** insert_row(int** arr, int& rows, const int cols, const int index)
 	// Возвращаем новый массив
 	return buffer;
 }
+
+void insert_col(int** arr, const int rows, int& cols, const int index)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		int* buffer = new int[cols + 1] {};
+		for (int j = 0; j < index; j++)buffer[j] = arr[i][j];
+		for (int j = index; j < cols; j++)buffer[j+1] = arr[i][j];
+		delete[]arr[i];
+		arr[i] = buffer;
+	}
+	cols++;
+}
+
 int* erase(int* arr, int& n, int value, int index)
 {
 	int* buffer = new int[n - 1];
@@ -313,6 +379,21 @@ int** erase_row(int** arr, int& rows, const int cols, const int index)
 	rows--;
 	return buffer;
 }
+
+void erase_col(int** arr, const int rows, int& cols, const int index) 
+{
+	for (int i = 0; i < rows; i++)
+	{
+		int* buffer = new int[cols - 1];
+		for (int j = 0; j < index; j++) buffer[j] = arr[i][j];
+		for (int j = index + 1; j < cols; j++)buffer[j - 1] = arr[i][j];
+		delete[] arr[i];
+		arr[i] = buffer;
+	}
+	cols--;
+}
+
+
 int* pop_back(int* arr, int& n)
 {
 	//int* buffer = new int[n - 1];
@@ -339,6 +420,18 @@ int** pop_row_back(int** arr, int& rows, const int cols)
 	return buffer;
 }
 
+void pop_col_back(int** arr, const int rows, int& cols)
+{
+	for (int i = 0; i < rows; i++)
+	{
+	int* buffer = new int[cols - 1];
+		for (int j = 0; j < cols-1; j++)buffer[j] = arr[i][j];
+		delete arr[i];
+		arr[i] = buffer;
+	}
+	cols--;
+}
+
 int* pop_front(int* arr, int& n)
 {
 	int* buffer = new int[--n];
@@ -354,43 +447,15 @@ int** pop_row_front(int** arr, int& rows, const int cols)
 	delete[] arr;
 	return buffer;
 }
-void push_col_back(int** arr, const int rows, int& cols)
+void pop_col_front(int** arr, const int rows, int& cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		//1) Создаем буферную строку
-		int* buffer = new int[cols + 1] {};
-		//2) Копируем все содержимое из исходной строки в буферную:
-		for (int j = 0; j < cols; j++)buffer[j] = arr[i][j];
-		//3) Удаляем исходную строку
-		delete[] arr[i];
-		//4) Записываем адрес новой строки в массив указателей: 
+		int* buffer = new int[cols - 1];
+		for (int j = 0; j < cols; j++)buffer[j] = arr[i][j+1];
+		delete arr[i];
 		arr[i] = buffer;
 	}
-	cols++;
+	cols--;
 }
-void push_col_front(int** arr, const int rows, int& cols)
-{
-	// Создаем новый массив с увеличенным числом столбцов на 1
-	int** buffer = new int* [rows];
-	for (int i = 0; i < rows; i++) 
-	{
-		buffer[i] = new int[cols + 1] {};
-		// Копируем элементы из исходного массива смещая их вправо на 1
-		for (int j = 0; j < cols; j++) 
-		{
-			buffer[i][j + 1] = arr[i][j];
-		}
-		// Устанавливаем первый элемент в новой строке в значение 0
-		buffer[i][0] = 0;
-	}
-	// Удаляем исходный массив и заменяем его на новый массив
-	for (int i = 0; i < rows; i++)
-	{
-		delete[] arr[i];
-	}
-	delete[] arr;
-	arr = buffer;
-	// Увеличиваем число столбцов
-	cols++;
-}
+
