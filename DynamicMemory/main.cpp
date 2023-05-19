@@ -21,6 +21,7 @@ void FillRand(double arr[], const int n);
 void FillRand(char arr[], const int n);
 
 void FillRand(int** arr, const int rows, const int cols);
+void FillRand(double** arr, const int rows, const int cols);
 void FillRand(char** arr, const int rows, const int cols);
 
 template <typename T>void Print(T arr[], int const n);
@@ -69,7 +70,7 @@ T** erase_row(T** arr, int& rows, const int cols, const int index);
 template <typename T>
 void erase_col(T** arr, const int rows, int& cols, const int index);
 
-	typedef char DataType;
+	typedef double DataType;
 
 void main()
 {
@@ -253,6 +254,19 @@ void FillRand(int** arr, const int rows, const int cols)
 		}
 	}
 }
+
+void FillRand(double** arr, const int rows, const int cols)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			arr[i][j] = rand() % 10000;
+			arr[i][j] /= 100;
+		}
+	}
+}
+
 void FillRand(char** arr, const int rows, const int cols)
 {
 	for (int i = 0; i < rows; i++)
