@@ -522,7 +522,7 @@ T* pop_front(T* arr, int& n)
 template <typename T>
 T** pop_row_front(T** arr, int& rows, const int cols)
 {
-	T** buffer = new T* [--rows];
+	T** buffer = new T* [--rows]; 
 	for (int i = 0; i < rows; i++)buffer[i] = arr[i + 1];
 	delete[] arr;
 	return buffer;
