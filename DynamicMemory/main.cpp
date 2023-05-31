@@ -146,7 +146,6 @@ void main()
 	arr = insert_row(arr, rows, cols, index);
 	Print(arr, rows, cols);
 
-
 	cout << delimiter << endl;
 	cout << "удаляет последнюю строку двумерного динамического массива: " << endl;
 	arr = pop_row_back(arr, rows, cols);
