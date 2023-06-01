@@ -383,9 +383,9 @@ template <typename T>void erase_col(T** arr, const int rows, int& cols, int inde
 	for (int i = 0; i < rows; i++)
 	{
 		arr[i] = erase(arr[i], cols, T(), index);
-	cols++;
+		cols++;
 	}
-		cols--;
+	cols--;
 }
 
 
