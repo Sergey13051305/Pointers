@@ -10,11 +10,9 @@ using std::endl;
 //#define DynamicMemory_1
 #define DynamicMemory_2
 //#define PERFOMANCE_TEST
-template <typename T>
-T** Allocate(const int rows, const int cols);
+template <typename T>T** Allocate(const int rows, const int cols);
 
-template <typename T>
-void Clear(T** arr, const int rows);
+template <typename T>void Clear(T** arr, const int rows);
 
 void FillRand(int arr[], const int n);
 void FillRand(double arr[], const int n);
@@ -27,48 +25,30 @@ void FillRand(char** arr, const int rows, const int cols);
 template <typename T>void Print(T arr[], int const n);
 template <typename T>void Print(T** arr, const int rows, const int cols);
 
-template <typename T>
-T* push_back(T* arr, int& n, const T& value);
-template <typename T>
-T** push_row_back(T** arr, int& rows, const int cols);
-template <typename T>
-void push_col_back(T** arr, const int rows, int& cols);
+template <typename T>T* push_back(T* arr, int& n, const T& value);
+template <typename T>T** push_row_back(T** arr, int& rows, const int cols);
+template <typename T>void push_col_back(T** arr, const int rows, int& cols);
 
-template <typename T>
-T* push_front(T* arr, int& n, T value); 
-template <typename T>
-T** push_row_front(T** arr, int& rows, const int cols);
-template <typename T>
-void push_col_front(T** arr, const int rows, int& cols);
+template <typename T>T* push_front(T* arr, int& n, T value); 
+template <typename T>T** push_row_front(T** arr, int& rows, const int cols);
+template <typename T>void push_col_front(T** arr, const int rows, int& cols);
 
-template <typename T>
-T* insert(T* arr, int& n, T value, int index);
+template <typename T>T* insert(T* arr, int& n, T value, int index);
 
-template<typename T>
-T** insert_row(T** arr, int& rows, const int cols, const int index);
-template<typename T>
-void insert_col(T** arr, const int rows, int& cols, const int index);
+template<typename T>T** insert_row(T** arr, int& rows, const int cols, const int index);
+template<typename T>void insert_col(T** arr, const int rows, int& cols, const int index);
 
-template <typename T>
-T* pop_back(T* arr, int& n);
-template <typename T>
-T** pop_row_back(T** arr, int& rows, const int cols);
-template <typename T>
-void pop_col_back(T** arr, const int rows, int& cols);
+template <typename T>T* pop_back(T* arr, int& n);
+template <typename T>T** pop_row_back(T** arr, int& rows, const int cols);
+template <typename T>void pop_col_back(T** arr, const int rows, int& cols);
 
-template <typename T>
-T* pop_front(T* arr, int& n);
-template <typename T>
-T** pop_row_front(T** arr, int& rows, const int cols);
-template <typename T>
-void pop_col_front(T** arr, const int rows, int& cols);
+template <typename T>T* pop_front(T* arr, int& n);
+template <typename T>T** pop_row_front(T** arr, int& rows, const int cols);
+template <typename T>void pop_col_front(T** arr, const int rows, int& cols);
 
-template <typename T>
-T* erase(T* arr, int& n, int value, int index);
-template <typename T>
-T** erase_row(T** arr, int& rows, const int cols, const int index);
-template <typename T>
-void erase_col(T** arr, const int rows, int& cols, const int index);
+template <typename T>T* erase(T* arr, int& n, int value, int index);
+template <typename T>T** erase_row(T** arr, int& rows, const int cols, int index);
+template <typename T>void erase_col(T** arr, const int rows, int& cols, int index);
 
 	typedef double DataType;
 
@@ -142,7 +122,7 @@ void main()
 
 	cout << delimiter << endl;
 	cout << "вставляет пустую строку в двумерный динамический массив по заданному индексу: " << endl;
-	cout << "Введите индекс добовляемого элемента: "; cin >> index;
+	cout << "Введите индекс добовляемой строки: "; cin >> index;
 	arr = insert_row(arr, rows, cols, index);
 	Print(arr, rows, cols);
 
@@ -198,8 +178,7 @@ void main()
 
 #endif
 }
-template <typename T>
-T** Allocate(const int rows, const int cols)
+template <typename T>T** Allocate(const int rows, const int cols)
 {
 	T** arr = new T* [rows];
 	for (int i = 0; i < rows; i++)
@@ -209,8 +188,7 @@ T** Allocate(const int rows, const int cols)
 	return arr;
 }
 
-template <typename T>
-void Clear(T** arr, const int rows)
+template <typename T>void Clear(T** arr, const int rows)
 {
 	//1) Удаляем строки
 	for (int i = 0; i < rows; i++)
@@ -297,8 +275,7 @@ template <typename T>void Print(T** arr, const int rows, const int cols)
 	}
 }
 
-template <typename T>
-T* push_back(T* arr, int& n, const T& value)
+template <typename T>T* push_back(T* arr, int& n, const T& value)
 {
 	//1)Создаем буферный массив нужного размера(на 1 элемент больше)
 	T* buffer = new T[n + 1];
@@ -317,43 +294,21 @@ T* push_back(T* arr, int& n, const T& value)
 	//7)Элемент добавлен
 	return arr;
 }
-template <typename T>
-T** push_row_back(T** arr, int& rows, const int cols)
+template <typename T>T** push_row_back(T** arr, int& rows, const int cols)
 {
-	//1) Создаем буферный массив указателей:
-	T** buffer = new T* [rows + 1];
-	//2) Копируем адреса строк из исходного массива в буфферный:
-	for (int i = 0; i < rows; i++)buffer[i] = arr[i];
-	//3) Удаляем исходный массив указателей:
-	delete[] arr;
-	//4) Подменяем адрес массива указателей
-	arr = buffer;
-	//5) Создаем новую строку:
-	arr[rows] = new T[cols] {};//Заполняет значение по умолчанию;
-	//6) После добавлдения строки нужно увеличить количество строк с массива:
-	rows++;
-	//7)Возвращаем новый массив
-	return arr;
+	return push_back(arr, rows, new T[cols]{}); //Функция push_back переопределяет массив указателей.
 }
 
-template <typename T>
-void push_col_back(T** arr, const int rows, int& cols)
+template <typename T>void push_col_back(T** arr, const int rows, int& cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		//1) Создаем буферную строку
-		T* buffer = new T[cols + 1] {};
-		//2) Копируем все содержимое из исходной строки в буферную:
-		for (int j = 0; j < cols; j++)buffer[j] = arr[i][j];
-		//3) Удаляем исходную строку
-		delete[] arr[i];
-		//4) Записываем адрес новой строки в массив указателей: 
-		arr[i] = buffer;
+		arr[i] = push_back(arr[i], cols, T());
+		cols--; //Компенсируем увеличение на 1 столбец
 	}
 	cols++;
 }
-template <typename T>
-T* push_front(T* arr, int& n, T value)
+template <typename T>T* push_front(T* arr, int& n, T value)
 {
 	T* buffer = new T[n + 1];
 	buffer[0] = value;
@@ -363,75 +318,52 @@ T* push_front(T* arr, int& n, T value)
 	n++;
 	return arr;
 }
-template <typename T>
-T** push_row_front(T** arr, int& rows, const int cols)
+template <typename T>T** push_row_front(T** arr, int& rows, const int cols)
 {
-	T** buffer = new T* [rows + 1];
-	buffer[0] = new T[cols] {};
-	for (int i = 0; i < rows; i++)buffer[i + 1] = arr[i];
-	delete[] arr;
-	rows++;
-	return buffer;
+	return push_front(arr, rows, new T[cols]{});
 }
-template <typename T>
-void push_col_front(T** arr, const int rows, int& cols)
+template <typename T>void push_col_front(T** arr, const int rows, int& cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		T* buffer = new T[cols + 1] {};
-		for (int j = 0; j < cols; j++) buffer[j + 1] = arr[i][j];
-		delete[] arr[i];
-		arr[i] = buffer;
+		arr[i] = push_front(arr[i], cols, T());
+		cols--;
 	}
 	cols++;
 }
 
-template <typename T>
-T* insert(T* arr, int& n, T value, int index)
+template <typename T>T* insert(T* arr, int& n, T value, int index)
 {
+	// Создаем новый массив с увеличенным числом строк на 1
 	T* buffer = new T[n + 1];
+	// Копируем строки из исходного массива до индекса в новый массив
 	for (int i = 0; i < index; i++)buffer[i] = arr[i];
+	// Копируем строки из исходного массива после индекса в новый массив со здвигом
 	for (int i = index; i < n; i++)buffer[i + 1] = arr[i];
+	// Удаляем исходный массив
 	delete[] arr;
 	arr = buffer;
 	arr[index] = value;
+	// Увеличиваем число строк
 	n++;
+	// Возвращаем новый массив
 	return arr;
 }
-template <typename T>
-T** insert_row(T** arr, int& rows, const int cols, const int index)
+template <typename T>T** insert_row(T** arr, int& rows, const int cols, const int index)
 {
-	// Создаем новый массив с увеличенным числом строк на 1
-	T** buffer = new T* [rows + 1];
-	// Копируем строки из исходного массива до индекса в новый массив
-	for (int i = 0; i < index; i++)buffer[i] = arr[i];
-	// Вставляем новую строку в новый массив
-	buffer[index] = new T[cols] {};
-	// Копируем строки из исходного массива после индекса в новый массив со здвигом
-	for (int i = index; i < rows; i++)buffer[i + 1] = arr[i];
-	// Удаляем исходный массив
-	delete[] arr;
-	// Увеличиваем число строк
-	rows++;
-	// Возвращаем новый массив
-	return buffer;
+	return insert(arr, rows, new T[cols]{}, index);
 }
-template <typename T>
-void insert_col(T** arr, const int rows, int& cols, const int index)
+template <typename T>void insert_col(T** arr, const int rows, int& cols, const int index)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		T* buffer = new T[cols + 1] {};
-		for (int j = 0; j < index; j++)buffer[j] = arr[i][j];
-		for (int j = index; j < cols; j++)buffer[j + 1] = arr[i][j];
-		delete[]arr[i];
-		arr[i] = buffer;
+		arr[i] = insert(arr[i], cols, T(), index);
+		cols--;
 	}
 	cols++;
 }
 
-template <typename T>
-T* erase(T* arr, int& n, int value, int index)
+template <typename T>T* erase(T* arr, int& n, int value, int index)
 {
 	T* buffer = new T[n - 1];
 	for (int i = 0; i < index; i++)buffer[i] = arr[i];
@@ -441,34 +373,23 @@ T* erase(T* arr, int& n, int value, int index)
 	return buffer;
 }
 
-template <typename T>
-T** erase_row(T** arr, int& rows, const int cols, const int index)
+template <typename T>T** erase_row(T** arr, int& rows, const int cols, int index)
 {
-	T** buffer = new T* [rows - 1];
-	for (int i = 0; i < index; i++)buffer[i] = arr[i];
-	for (int i = index + 1; i < rows; i++)buffer[i - 1] = arr[i];
-	delete[] arr;
-	rows--;
-	return buffer;
+	return erase(arr, rows, cols, index);
 }
 
-template <typename T>
-void erase_col(T** arr, const int rows, int& cols, const int index)
+template <typename T>void erase_col(T** arr, const int rows, int& cols, int index)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		T* buffer = new T[cols - 1];
-		for (int j = 0; j < index; j++) buffer[j] = arr[i][j];
-		for (int j = index + 1; j < cols; j++)buffer[j - 1] = arr[i][j];
-		delete[] arr[i];
-		arr[i] = buffer;
+		arr[i] = erase(arr[i], cols, T(), index);
+	cols++;
 	}
-	cols--;
+		cols--;
 }
 
 
-template <typename T>
-T* pop_back(T* arr, int& n)
+template <typename T>T* pop_back(T* arr, int& n)
 {
 	//int* buffer = new int[n - 1];
 	//for (int i = 0; i < i-n; i++)
@@ -486,30 +407,25 @@ T* pop_back(T* arr, int& n)
 	//возврашает новый адресс массива
 }
 
-template <typename T>
-T** pop_row_back(T** arr, int& rows, const int cols)
+template <typename T>T** pop_row_back(T** arr, int& rows, const int cols)
 {
-	T** buffer = new T* [--rows];
-	for (int i = 0; i < rows; i++)buffer[i] = arr[i];
-	delete[] arr;
-	return buffer;
+	//1) Удаляем удаляемую строку:
+	delete[] arr[rows-1];
+	//2) Переопределяем массив указателей:
+	return pop_back(arr, rows);
 }
 
-template <typename T>
-void pop_col_back(T** arr, const int rows, int& cols)
+template <typename T>void pop_col_back(T** arr, const int rows, int& cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		T* buffer = new T[cols - 1];
-		for (int j = 0; j < cols - 1; j++)buffer[j] = arr[i][j];
-		delete arr[i];
-		arr[i] = buffer;
+		arr[i] = pop_back(arr[i], cols);
+		cols++;
 	}
 	cols--;
 }
 
-template <typename T>
-T* pop_front(T* arr, int& n)
+template <typename T>T* pop_front(T* arr, int& n)
 {
 	T* buffer = new T[--n];
 	for (int i = 0; i < n; i++)buffer[i] = arr[i + 1];
@@ -517,24 +433,17 @@ T* pop_front(T* arr, int& n)
 	return buffer;
 	//в новый массив копируем все элементы кроме удаляемого
 }
-
-template <typename T>
-T** pop_row_front(T** arr, int& rows, const int cols)
+template<typename T>T** pop_row_front(T** arr, int& rows, const int cols)
 {
-	T** buffer = new T* [--rows]; 
-	for (int i = 0; i < rows; i++)buffer[i] = arr[i + 1];
-	delete[] arr;
-	return buffer;
+	delete[] arr[rows+1];
+	return pop_front(arr, rows);
 }
-template <typename T>
-void pop_col_front(T** arr, const int rows, int& cols)
+template <typename T>void pop_col_front(T** arr, const int rows, int& cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		T* buffer = new T[cols - 1];
-		for (int j = 0; j < cols; j++)buffer[j] = arr[i][j + 1];
-		delete arr[i];
-		arr[i] = buffer;
+		arr[i] = pop_front(arr[i], cols);
+		cols++;
 	}
 	cols--;
 }
